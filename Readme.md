@@ -22,6 +22,9 @@
 
 Две реализации парсера: StringParser.h и CharParser.h
 
+<img width="1296" alt="Untitled" src="https://github.com/Daniilmipt/Kons_challenge/assets/61058545/b09a74ed-8f5b-4870-a367-13ca31ecd421">
+
+
 ***Чтение файла и поиск слов***
   
 ****1) Первый способ****
