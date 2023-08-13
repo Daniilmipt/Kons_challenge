@@ -24,12 +24,12 @@ public:
         if (file.is_open()) {
             std::string str;
             std::vector<std::string> stringVector;
-            int posW1 = -1, idW = 0, count = 0, offset = 0;
+            int idW = 0, count = 0, offset = 0;
 
             while (file >> str) {
                 stringVector = formatString(str);
                 for (const std::string &word: stringVector) {
-                    updateCount(word, word1, word2, positionsWord1, distance, posW1, idW, count, offset);
+                    updateCount(word, word1, word2, positionsWord1, distance, idW, count, offset);
                     ++idW;
                 }
             }
@@ -50,19 +50,16 @@ private:
 
     static void updateCount(const std::string &word, const std::string &word1, const std::string &word2,
                                        std::vector<int> &positionFirstWord, int distance,
-                                       int &posW1, int &idW, int &count, int &offset){
+                                       int &idW, int &count, int &offset){
         int iOffset = offset;
-        if(posW1 != -1){
-            if (compareStringsByString(word, word2)){
-                for (int j = iOffset; j < positionFirstWord.size(); ++j){
-                    idW - positionFirstWord[offset] - 1 > distance ? offset = j + 1 : ++count;
-                }
-                offset = iOffset;
+        if(iOffset < positionFirstWord.size() && compareStringsByString(word, word2)){
+            for (int j = iOffset; j < positionFirstWord.size(); ++j){
+                idW - positionFirstWord[offset] - 1 > distance ? offset = j + 1 : ++count;
             }
+            offset = iOffset;
         }
         if (compareStringsByString(word, word1)){
             positionFirstWord.push_back(idW);
-            posW1 = idW;
         }
     }
 
