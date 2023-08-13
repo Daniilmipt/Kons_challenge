@@ -1,0 +1,72 @@
+/home/daniil/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/232.8660.186/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/daniil/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/232.8660.186/bin/ninja/linux/x64/ninja -G Ninja -S /home/daniil/CLionProjects/Kons_challenge -B /home/daniil/CLionProjects/Kons_challenge/cmake-build-debug
+-- Found Boost: /usr/lib/cmake/Boost-1.81.0/BoostConfig.cmake (found suitable version "1.81.0", minimum required is "1.65.1") found components: json 
+-- Found Boost 1.81.0 at /usr/lib/cmake/Boost-1.81.0
+--   Requested configuration: QUIET REQUIRED COMPONENTS thread;log;log_setup
+-- BoostConfig: find_package(boost_headers 1.81.0 EXACT CONFIG REQUIRED QUIET HINTS /usr/lib/cmake)
+-- BoostConfig: find_package(boost_thread 1.81.0 EXACT CONFIG REQUIRED QUIET HINTS /usr/lib/cmake)
+-- Found boost_thread 1.81.0 at /usr/lib/cmake/boost_thread-1.81.0
+-- Boost toolset is gcc13 (GNU 13.1.1)
+-- Scanning /usr/lib/cmake/boost_thread-1.81.0/libboost_thread-variant*.cmake
+--   Including /usr/lib/cmake/boost_thread-1.81.0/libboost_thread-variant-shared.cmake
+--   [ ] libboost_thread.so.1.81.0
+--   Including /usr/lib/cmake/boost_thread-1.81.0/libboost_thread-variant-static.cmake
+--   [x] libboost_thread.a
+-- Adding boost_thread dependencies: headers
+-- BoostConfig: find_package(boost_log 1.81.0 EXACT CONFIG REQUIRED QUIET HINTS /usr/lib/cmake)
+-- Found boost_log 1.81.0 at /usr/lib/cmake/boost_log-1.81.0
+-- Boost toolset is gcc13 (GNU 13.1.1)
+-- Scanning /usr/lib/cmake/boost_log-1.81.0/libboost_log-variant*.cmake
+--   Including /usr/lib/cmake/boost_log-1.81.0/libboost_log-variant-shared.cmake
+--   [ ] libboost_log.so.1.81.0
+--   Including /usr/lib/cmake/boost_log-1.81.0/libboost_log-variant-static.cmake
+--   [x] libboost_log.a
+-- Adding boost_log dependencies: atomic;chrono;filesystem;regex;thread;headers
+-- Found boost_atomic 1.81.0 at /usr/lib/cmake/boost_atomic-1.81.0
+-- Boost toolset is gcc13 (GNU 13.1.1)
+-- Scanning /usr/lib/cmake/boost_atomic-1.81.0/libboost_atomic-variant*.cmake
+--   Including /usr/lib/cmake/boost_atomic-1.81.0/libboost_atomic-variant-shared.cmake
+--   [ ] libboost_atomic.so.1.81.0
+--   Including /usr/lib/cmake/boost_atomic-1.81.0/libboost_atomic-variant-static.cmake
+--   [x] libboost_atomic.a
+-- Adding boost_atomic dependencies: headers
+-- Found boost_chrono 1.81.0 at /usr/lib/cmake/boost_chrono-1.81.0
+-- Boost toolset is gcc13 (GNU 13.1.1)
+-- Scanning /usr/lib/cmake/boost_chrono-1.81.0/libboost_chrono-variant*.cmake
+--   Including /usr/lib/cmake/boost_chrono-1.81.0/libboost_chrono-variant-shared.cmake
+--   [ ] libboost_chrono.so.1.81.0
+--   Including /usr/lib/cmake/boost_chrono-1.81.0/libboost_chrono-variant-static.cmake
+--   [x] libboost_chrono.a
+-- Adding boost_chrono dependencies: headers
+-- Found boost_filesystem 1.81.0 at /usr/lib/cmake/boost_filesystem-1.81.0
+-- Boost toolset is gcc13 (GNU 13.1.1)
+-- Scanning /usr/lib/cmake/boost_filesystem-1.81.0/libboost_filesystem-variant*.cmake
+--   Including /usr/lib/cmake/boost_filesystem-1.81.0/libboost_filesystem-variant-shared.cmake
+--   [ ] libboost_filesystem.so.1.81.0
+--   Including /usr/lib/cmake/boost_filesystem-1.81.0/libboost_filesystem-variant-static.cmake
+--   [x] libboost_filesystem.a
+-- Adding boost_filesystem dependencies: atomic;headers
+-- Found boost_regex 1.81.0 at /usr/lib/cmake/boost_regex-1.81.0
+-- Boost toolset is gcc13 (GNU 13.1.1)
+-- Scanning /usr/lib/cmake/boost_regex-1.81.0/libboost_regex-variant*.cmake
+--   Including /usr/lib/cmake/boost_regex-1.81.0/libboost_regex-variant-shared.cmake
+--   [ ] libboost_regex.so.1.81.0
+--   Including /usr/lib/cmake/boost_regex-1.81.0/libboost_regex-variant-static.cmake
+--   [x] libboost_regex.a
+-- Adding boost_regex dependencies: headers
+-- BoostConfig: find_package(boost_log_setup 1.81.0 EXACT CONFIG REQUIRED QUIET HINTS /usr/lib/cmake)
+-- Found boost_log_setup 1.81.0 at /usr/lib/cmake/boost_log_setup-1.81.0
+-- Boost toolset is gcc13 (GNU 13.1.1)
+-- Scanning /usr/lib/cmake/boost_log_setup-1.81.0/libboost_log_setup-variant*.cmake
+--   Including /usr/lib/cmake/boost_log_setup-1.81.0/libboost_log_setup-variant-shared.cmake
+--   [ ] libboost_log_setup.so.1.81.0
+--   Including /usr/lib/cmake/boost_log_setup-1.81.0/libboost_log_setup-variant-static.cmake
+--   [x] libboost_log_setup.a
+-- Adding boost_log_setup dependencies: atomic;chrono;filesystem;log;regex;thread;headers
+-- Found Boost: /usr/lib/cmake/Boost-1.81.0/BoostConfig.cmake (found version "1.81.0") found components: thread log log_setup 
+-- Boost_LIBRARIES:
+-- Boost::threadBoost::logBoost::log_setup
+-- BOOST_INCLUDEDIR:
+-- 
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/daniil/CLionProjects/Kons_challenge/cmake-build-debug

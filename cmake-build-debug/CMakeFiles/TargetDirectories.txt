@@ -1,0 +1,3 @@
+/home/daniil/CLionProjects/Kons_challenge/cmake-build-debug/CMakeFiles/Kons_challenge.dir
+/home/daniil/CLionProjects/Kons_challenge/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/daniil/CLionProjects/Kons_challenge/cmake-build-debug/CMakeFiles/rebuild_cache.dir
