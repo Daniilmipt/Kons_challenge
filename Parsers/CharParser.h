@@ -10,7 +10,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include"Parser.cpp"
+#include"../Parser.cpp"
 
 class CharParser : public Parser{
 public:
