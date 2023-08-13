@@ -17,7 +17,7 @@ int main(){
     for (unsigned i = 0; i < 3; ++i) {
         auto start = high_resolution_clock::now();
 
-        StringParser parser ("/home/daniil/CLionProjects/Kons_challenge/input.txt");
+        CharParser parser ("/home/daniil/CLionProjects/Kons_challenge/input.txt");
         std::string word1 = "Курс";
         std::string word2 = "состоит";
         int distance = 6;

@@ -38,20 +38,18 @@ public:
 private:
     static void updateCount(std::vector<char> &subvector, const std::string &word1, const std::string &word2,
                                      std::vector<int > &positionFirstWord, int distance,
-                                     int &posW1, int &idW, int &count, int &offset){
+                                     int &idW, int &count, int &offset){
         int iOffset = offset;
         if(!subvector.empty()){
-            if(posW1 != -1){
-                if (compareStringsByChar(&(*subvector.begin()), &(*subvector.end()), word2)){
+            if(iOffset < positionFirstWord.size()
+                && compareStringsByChar(&(*subvector.begin()), &(*subvector.end()), word2)){
                     for (int j = iOffset; j < positionFirstWord.size(); ++j){
                         idW - positionFirstWord[offset] - 1 > distance ? offset = j + 1 : ++count;
                     }
                     offset = iOffset;
-                }
             }
             if (compareStringsByChar(&(*subvector.begin()), &(*subvector.end()), word1)){
                 positionFirstWord.push_back(idW);
-                posW1 = idW;
             }
             subvector.clear();
             ++idW;
@@ -71,7 +69,7 @@ private:
                                const std::string &word2, int distance){
         std::vector<char> charVector;
         std::vector<int> positionsWord1;
-        int posW1 = -1, idW = 0, count = 0, offset = 0;
+        int idW = 0, count = 0, offset = 0;
 
         for (int i = 0; i < fileSize;){
             char ch = charSequence[i];
@@ -80,7 +78,7 @@ private:
                 std::string pStr (charSequence + i, charSequence + i + 3);
 
                 if (regStr.contains(pChar) || regStr.contains(pStr)){
-                    updateCount(charVector, word1, word2, positionsWord1, distance, posW1, idW, count, offset);
+                    updateCount(charVector, word1, word2, positionsWord1, distance, idW, count, offset);
                     regStr.contains(pChar) ? i += regStr.at(pChar) : i += regStr.at(pStr);
                 }
                 else{
@@ -95,11 +93,11 @@ private:
                 }
             }
             else{
-                updateCount(charVector, word1, word2, positionsWord1, distance, posW1, idW, count, offset);
+                updateCount(charVector, word1, word2, positionsWord1, distance, idW, count, offset);
                 i += regChar.at(ch);
             }
         }
-        updateCount(charVector, word1, word2, positionsWord1, distance, posW1, idW, count, offset);
+        updateCount(charVector, word1, word2, positionsWord1, distance, idW, count, offset);
 
         return count;
     }
