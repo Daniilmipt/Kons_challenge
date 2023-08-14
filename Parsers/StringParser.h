@@ -36,7 +36,8 @@ public:
             file.close();
             return count;
         }
-        throw std::runtime_error("Wrong file path");
+        std::cout << "Неправильный путь к файлу";
+        std::exit(0);
     }
 
 private:
@@ -78,21 +79,19 @@ private:
 
         for (int i = 0; i < str.size();){
             char ch = str[i];
-            if (!regChar.contains(ch)){
+            if (regChar.find(ch) == regChar.end()){
                 std::string pChar (str.begin() + i, str.begin() + i + 2);
                 std::string pStr (str.begin() + i, str.begin() + i + 3);
 
-                if (regStr.contains(pChar) || regStr.contains(pStr)){
+                if (regStr.find(pChar) != regStr.end() || regStr.find(pStr) != regStr.end()){
                     vectorByString(subCharVector, strVector);
-                    regStr.contains(pChar) ? i += regStr.at(pChar) : i += regStr.at(pStr);
+                    regStr.find(pChar) != regStr.end() ? i += regStr.at(pChar) : i += regStr.at(pStr);
                 }
                 else{
-                    if (isalpha(ch)){
+                    if (regNoSkip.find(ch) != regNoSkip.end())
                         subCharVector.push_back(str[i++]);
-                    }
                     else {
-                        subCharVector.push_back(str[i]);
-                        subCharVector.push_back(str[i + 1]);
+                        subCharVector.insert(subCharVector.end(), str.begin() + i, str.begin() + i + 2);
                         i += 2;
                     }
                 }

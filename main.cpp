@@ -4,35 +4,43 @@
 #include <chrono>
 using namespace std::chrono;
 
-int main(){
+bool is_number(const std::string& str)
+{
+    std::string::const_iterator it = str.begin();
+    while (it != str.end() && std::isdigit(*it)) ++it;
+    return !str.empty() && it == str.end();
+}
 
-//    StringParser parser("/home/daniil/CLionProjects/Kons_challenge/input.txt");
-//    std::string word1 = "практики";
-//    std::string word2 = "приложений";
-//    int distance = 100;
-//    unsigned count = parser.parse(word1, word2, distance);
-//    std::cout << "ans: " << count << "\n";
+int main(int argc, char* argv[]){
 
-
-    for (unsigned i = 0; i < 3; ++i) {
-        auto start = high_resolution_clock::now();
-
-        CharParser parser ("/home/daniil/CLionProjects/Kons_challenge/input.txt");
-        std::string word1 = "Курс";
-        std::string word2 = "состоит";
-        int distance = 6;
-
-        if (distance < 0){
-            throw std::runtime_error("Distance between words must be non-negative");
-        }
-        unsigned count = parser.parse(word1, word2, distance);
-        std::cout << "ans: " << count << "\n";
-
-        auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<microseconds>(stop - start);
-        std::cout << duration.count() << std::endl;
+    if (argc < 5){
+        std::cout << "Недостаточное число параметров. Должно быть 4 аргумента";
+        std::exit(0);
+    }
+    if (argc > 5){
+        std::cout << "Большое число аргументов. Должно быть 4 аргумента";
+        std::exit(0);
     }
 
+    std::string filePath = argv[1];
+    std::string word1 = argv[2];
+    if (is_number(word1)){
+        std::cout << "Первое слово не должно быть числом";
+        std::exit(0);
+    }
+    std::string word2 = argv[3];
+    if (is_number(word2)){
+        std::cout << "Второе слово не должно быть числом";
+        std::exit(0);
+    }
+    std::string strDistance = argv[4];
+    if (!is_number(strDistance) || std::stoi(strDistance) < 0){
+        std::cout << "Расстояние между словами должно быть целым неотрицательным числом";
+        std::exit(0);
+    }
+    int distance = std::stoi(strDistance);
 
-
+    CharParser parser(filePath);
+    int count = parser.parse(word1, word2, distance);
+    std::cout << count;
 }

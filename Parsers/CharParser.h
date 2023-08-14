@@ -18,12 +18,12 @@ public:
 
     int parse(const std::string &word1, const std::string &word2, int distance) const override{
         int fd = open(file_path.c_str(), O_RDONLY);
-        if (fd) {
+        if (fd != -1) {
             struct stat fileStat{};
             if (fstat(fd, &fileStat) == -1) {
-                perror("Error getting file size");
                 close(fd);
-                return 1;
+                std::cout << "Ошибка при получении размера файла";
+                std::exit(0);
             }
             size_t fileSize = fileStat.st_size;
             char *fileData = (char *) mmap(nullptr, fileSize, PROT_READ, MAP_SHARED, fd, 0);
@@ -32,7 +32,8 @@ public:
             munmap(fileData, fileSize);
             return count;
         }
-        throw std::runtime_error("Wrong file path");
+        std::cout << "Неправильный путь к файлу";
+        std::exit(0);
     }
 
 private:
@@ -73,21 +74,19 @@ private:
 
         for (int i = 0; i < fileSize;){
             char ch = charSequence[i];
-            if (!regChar.contains(ch)){
+            if (regChar.find(ch) == regChar.end()){
                 std::string pChar (charSequence + i, charSequence + i + 2);
                 std::string pStr (charSequence + i, charSequence + i + 3);
 
-                if (regStr.contains(pChar) || regStr.contains(pStr)){
+                if (regStr.find(pChar) != regStr.end() || regStr.find(pStr) != regStr.end()){
                     updateCount(charVector, word1, word2, positionsWord1, distance, idW, count, offset);
-                    regStr.contains(pChar) ? i += regStr.at(pChar) : i += regStr.at(pStr);
+                    regStr.find(pChar) != regStr.end() ? i += regStr.at(pChar) : i += regStr.at(pStr);
                 }
                 else{
-                    if (isalpha(ch)){
+                    if (regNoSkip.find(ch) != regNoSkip.end())
                         charVector.push_back(charSequence[i++]);
-                    }
                     else {
-                        charVector.push_back(charSequence[i]);
-                        charVector.push_back(charSequence[i + 1]);
+                        charVector.insert(charVector.end(), charSequence + i, charSequence + i + 2);
                         i += 2;
                     }
                 }
@@ -98,7 +97,6 @@ private:
             }
         }
         updateCount(charVector, word1, word2, positionsWord1, distance, idW, count, offset);
-
         return count;
     }
 };
