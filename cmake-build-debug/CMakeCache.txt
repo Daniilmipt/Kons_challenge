@@ -14,22 +14,6 @@
 # EXTERNAL cache entries
 ########################
 
-//The directory containing a CMake configuration file for Boost.
-Boost_DIR:PATH=/usr/lib/cmake/Boost-1.81.0
-
-Boost_FILESYSTEM_LIBRARY_RELEASE:STRING=/usr/lib/libboost_filesystem.so.1.81.0
-
-//Path to a file.
-Boost_INCLUDE_DIR:PATH=/usr/include
-
-Boost_JSON_LIBRARY_RELEASE:STRING=/usr/lib/libboost_json.so.1.81.0
-
-Boost_LOG_LIBRARY_RELEASE:STRING=/usr/lib/libboost_log.a
-
-Boost_LOG_SETUP_LIBRARY_RELEASE:STRING=/usr/lib/libboost_log_setup.a
-
-Boost_THREAD_LIBRARY_RELEASE:STRING=/usr/lib/libboost_thread.a
-
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=/usr/bin/addr2line
 
@@ -237,43 +221,11 @@ Kons_challenge_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 Kons_challenge_SOURCE_DIR:STATIC=/home/daniil/CLionProjects/Kons_challenge
 
-//The directory containing a CMake configuration file for boost_atomic.
-boost_atomic_DIR:PATH=/usr/lib/cmake/boost_atomic-1.81.0
-
-//The directory containing a CMake configuration file for boost_chrono.
-boost_chrono_DIR:PATH=/usr/lib/cmake/boost_chrono-1.81.0
-
-//The directory containing a CMake configuration file for boost_container.
-boost_container_DIR:PATH=/usr/lib/cmake/boost_container-1.81.0
-
-//The directory containing a CMake configuration file for boost_filesystem.
-boost_filesystem_DIR:PATH=/usr/lib/cmake/boost_filesystem-1.81.0
-
-//The directory containing a CMake configuration file for boost_headers.
-boost_headers_DIR:PATH=/usr/lib/cmake/boost_headers-1.81.0
-
-//The directory containing a CMake configuration file for boost_json.
-boost_json_DIR:PATH=/usr/lib/cmake/boost_json-1.81.0
-
-//The directory containing a CMake configuration file for boost_log.
-boost_log_DIR:PATH=/usr/lib/cmake/boost_log-1.81.0
-
-//The directory containing a CMake configuration file for boost_log_setup.
-boost_log_setup_DIR:PATH=/usr/lib/cmake/boost_log_setup-1.81.0
-
-//The directory containing a CMake configuration file for boost_regex.
-boost_regex_DIR:PATH=/usr/lib/cmake/boost_regex-1.81.0
-
-//The directory containing a CMake configuration file for boost_thread.
-boost_thread_DIR:PATH=/usr/lib/cmake/boost_thread-1.81.0
-
 
 ########################
 # INTERNAL cache entries
 ########################
 
-//ADVANCED property for variable: Boost_DIR
-Boost_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_ADDR2LINE
 CMAKE_ADDR2LINE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR
@@ -350,8 +302,6 @@ CMAKE_GENERATOR_INSTANCE:INTERNAL=
 CMAKE_GENERATOR_PLATFORM:INTERNAL=
 //Name of generator toolset.
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
-//Test CMAKE_HAVE_LIBC_PTHREAD
-CMAKE_HAVE_LIBC_PTHREAD:INTERNAL=1
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=/home/daniil/CLionProjects/Kons_challenge
@@ -415,28 +365,6 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
-//Details about finding Boost
-FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/usr/lib/cmake/Boost-1.81.0/BoostConfig.cmake][cfound components: thread log log_setup ][v1.81.0()]
 //linker supports push/pop state
 _CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE
-//ADVANCED property for variable: boost_atomic_DIR
-boost_atomic_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: boost_chrono_DIR
-boost_chrono_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: boost_container_DIR
-boost_container_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: boost_filesystem_DIR
-boost_filesystem_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: boost_headers_DIR
-boost_headers_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: boost_json_DIR
-boost_json_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: boost_log_DIR
-boost_log_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: boost_log_setup_DIR
-boost_log_setup_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: boost_regex_DIR
-boost_regex_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: boost_thread_DIR
-boost_thread_DIR-ADVANCED:INTERNAL=1
 
