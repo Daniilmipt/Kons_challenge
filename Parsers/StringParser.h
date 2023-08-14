@@ -49,6 +49,13 @@ private:
         }
     }
 
+
+    /*
+     * Проверяем пары
+     * word - прочитанное слово
+     * positionFirstWord - вектор из индексов вхождений первого слова в исходный файл
+     * idW - позиция слова в файле
+    */
     static void updateCount(const std::string &word, const std::string &word1, const std::string &word2,
                                        std::vector<int> &positionFirstWord, int distance,
                                        int &idW, int &count, int &offset){
@@ -64,6 +71,8 @@ private:
         }
     }
 
+
+    // Проверяем слова на совпадение
     static bool compareStringsByString(const std::string &word, const std::string &stringTempl){
         if (word.size() != stringTempl.size()) return false;
 
@@ -73,14 +82,23 @@ private:
         return true;
     }
 
+
+    /*
+     * Рабиваем строку на слова
+     * charSequence - последовательность символов из файла
+     * distance - максимально возможное расстояние между словами
+    */
     static std::vector<std::string> formatString(std::string str){
+        // вектор из символов слова
         std::vector<char> subCharVector;
         std::vector<std::string> strVector;
 
         for (int i = 0; i < str.size();){
             char ch = str[i];
-            if (regChar.find(ch) == regChar.end()){
+            if (!regChar.count(ch)){
+                // выделяем строку из следующих двух символов
                 std::string pChar (str.begin() + i, str.begin() + i + 2);
+                // выделяем строку из следующих трех символов
                 std::string pStr (str.begin() + i, str.begin() + i + 3);
 
                 if (regStr.find(pChar) != regStr.end() || regStr.find(pStr) != regStr.end()){
@@ -98,7 +116,7 @@ private:
             }
             else{
                 vectorByString(subCharVector, strVector);
-                i += regChar.at(ch);
+                ++i;
             }
         }
         vectorByString(subCharVector, strVector);

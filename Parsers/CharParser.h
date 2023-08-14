@@ -25,6 +25,7 @@ public:
                 std::cout << "Ошибка при получении размера файла";
                 std::exit(0);
             }
+            // находим размер исходного файла
             size_t fileSize = fileStat.st_size;
             char *fileData = (char *) mmap(nullptr, fileSize, PROT_READ, MAP_SHARED, fd, 0);
             int count = formatCharFile(fileData, fileSize, word1, word2, distance);
@@ -37,11 +38,17 @@ public:
     }
 
 private:
+    /*
+     * Проверяем пары
+     * subvector - вектор из символов слова
+     * positionFirstWord - вектор из индексов вхождений первого слова в исходный файл
+     * idW - позиция слова в файле
+    */
     static void updateCount(std::vector<char> &subvector, const std::string &word1, const std::string &word2,
                                      std::vector<int > &positionFirstWord, int distance,
                                      int &idW, int &count, int &offset){
-        int iOffset = offset;
         if(!subvector.empty()){
+            int iOffset = offset;
             if(iOffset < positionFirstWord.size()
                 && compareStringsByChar(&(*subvector.begin()), &(*subvector.end()), word2)){
                     for (int j = iOffset; j < positionFirstWord.size(); ++j){
@@ -57,6 +64,8 @@ private:
         }
     }
 
+
+    // Проверяем слова на совпадение
     static bool compareStringsByChar(const char* begin, const char* end, const std::string &stringTempl){
         if (end - begin != stringTempl.size()) return false;
 
@@ -66,16 +75,25 @@ private:
         return true;
     }
 
+    /*
+        charSequence - последовательность символов из файла
+        distance - максимально возможное расстояние между словами
+    */
     static int formatCharFile(char* charSequence, size_t fileSize, const std::string &word1,
                                const std::string &word2, int distance){
+        // вектор из символов слова
         std::vector<char> charVector;
+        // вектор, содержащий индексы вхождений первого слова в исходный файл
         std::vector<int> positionsWord1;
+        // idW - позиция слова в файле; count - число пар, на расстоянии меньшем чем distance
         int idW = 0, count = 0, offset = 0;
 
         for (int i = 0; i < fileSize;){
             char ch = charSequence[i];
-            if (regChar.find(ch) == regChar.end()){
+            if (!regChar.count(ch)){
+                // выделяем строку из следующих двух символов
                 std::string pChar (charSequence + i, charSequence + i + 2);
+                // выделяем строку из следующих трех символов
                 std::string pStr (charSequence + i, charSequence + i + 3);
 
                 if (regStr.find(pChar) != regStr.end() || regStr.find(pStr) != regStr.end()){
@@ -93,7 +111,7 @@ private:
             }
             else{
                 updateCount(charVector, word1, word2, positionsWord1, distance, idW, count, offset);
-                i += regChar.at(ch);
+                ++i;
             }
         }
         updateCount(charVector, word1, word2, positionsWord1, distance, idW, count, offset);
