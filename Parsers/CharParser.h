@@ -16,6 +16,9 @@ class CharParser : public Parser{
 public:
     using Parser::Parser;
 
+    /*
+     * открывает файл, отображает его в память, обрабатывает символьные данные, а затем закрывает файл
+     */
     int parse(const std::string &word1, const std::string &word2, int distance) const override{
         int fd = open(file_path.c_str(), O_RDONLY);
         if (fd != -1) {
@@ -23,18 +26,19 @@ public:
             if (fstat(fd, &fileStat) == -1) {
                 close(fd);
                 std::cout << "Ошибка при получении размера файла";
-                std::exit(0);
+                std::exit(EXIT_SUCCESS);
             }
             // находим размер исходного файла
             size_t fileSize = fileStat.st_size;
             char *fileData = (char *) mmap(nullptr, fileSize, PROT_READ, MAP_SHARED, fd, 0);
+            // обрабатывает символьные данные
             int count = formatCharFile(fileData, fileSize, word1, word2, distance);
             close(fd);
             munmap(fileData, fileSize);
             return count;
         }
         std::cout << "Неправильный путь к файлу";
-        std::exit(0);
+        std::exit(EXIT_SUCCESS);
     }
 
 private:
@@ -42,7 +46,7 @@ private:
      * Проверяем пары
      * subvector - вектор из символов слова
      * positionFirstWord - вектор из индексов вхождений первого слова в исходный файл
-     * idW - позиция слова в файле
+     * idW - позиция текущего слова в файле
     */
     static void updateCount(std::vector<char> &subvector, const std::string &word1, const std::string &word2,
                                      std::vector<int > &positionFirstWord, int distance,
@@ -56,9 +60,8 @@ private:
                     }
                     offset = iOffset;
             }
-            if (compareStringsByChar(&(*subvector.begin()), &(*subvector.end()), word1)){
+            if (compareStringsByChar(&(*subvector.begin()), &(*subvector.end()), word1))
                 positionFirstWord.push_back(idW);
-            }
             subvector.clear();
             ++idW;
         }
@@ -76,8 +79,9 @@ private:
     }
 
     /*
-        charSequence - последовательность символов из файла
-        distance - максимально возможное расстояние между словами
+     * Посимвольно итерируемся по файлу
+     * charSequence - последовательность символов из файла
+     * distance - максимально возможное расстояние между словами
     */
     static int formatCharFile(char* charSequence, size_t fileSize, const std::string &word1,
                                const std::string &word2, int distance){
@@ -98,11 +102,14 @@ private:
 
                 if (regStr.find(pChar) != regStr.end() || regStr.find(pStr) != regStr.end()){
                     updateCount(charVector, word1, word2, positionsWord1, distance, idW, count, offset);
-                    regStr.find(pChar) != regStr.end() ? i += regStr.at(pChar) : i += regStr.at(pStr);
+                    i += regStr.find(pChar) != regStr.end() ? regStr.at(pChar) : regStr.at(pStr);
                 }
                 else{
-                    if (regNoSkip.find(ch) != regNoSkip.end())
-                        charVector.push_back(charSequence[i++]);
+                    // если не должны пропускать символ, то добавляем его в вектор и сдвигаем указатель
+                    if (regNoSkip.find(ch) != regNoSkip.end()) {
+                        charVector.push_back(charSequence[i]);
+                        i += regNoSkip.at(ch);
+                    }
                     else {
                         charVector.insert(charVector.end(), charSequence + i, charSequence + i + 2);
                         i += 2;

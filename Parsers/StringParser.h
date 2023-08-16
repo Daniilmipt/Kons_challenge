@@ -37,7 +37,7 @@ public:
             return count;
         }
         std::cout << "Неправильный путь к файлу";
-        std::exit(0);
+        std::exit(EXIT_SUCCESS);
     }
 
 private:
