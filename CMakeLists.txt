@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.26)
-project(folder_git)
+project(Kons_challenge)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-
-
-add_executable(folder_git main.cpp)
+add_executable(Kons_challenge main.cpp)
