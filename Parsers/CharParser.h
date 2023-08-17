@@ -1,16 +1,21 @@
-#ifndef KONS_CHALLENGE_CharParser_H
-#define KONS_CHALLENGE_CharParser_H
 #include <string>
 #include <utility>
 #include <fstream>
 #include <iostream>
 #include <set>
 #include <regex>
+#include"../Parser.cpp"
+
+#ifdef _WIN32
+#include <windows.h>
+#include <cstring>
+#else
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include"../Parser.cpp"
+#endif
+
 
 class CharParser : public Parser{
 public:
@@ -20,28 +25,75 @@ public:
      * открывает файл, отображает его в память, обрабатывает символьные данные, а затем закрывает файл
      */
     int parse(const std::string &word1, const std::string &word2, int distance) const override{
-        int fd = open(file_path.c_str(), O_RDONLY);
-        if (fd != -1) {
-            struct stat fileStat{};
-            if (fstat(fd, &fileStat) == -1) {
-                close(fd);
-                std::cout << "Ошибка при получении размера файла";
-                std::exit(EXIT_SUCCESS);
-            }
-            // находим размер исходного файла
-            size_t fileSize = fileStat.st_size;
-            char *fileData = (char *) mmap(nullptr, fileSize, PROT_READ, MAP_SHARED, fd, 0);
-            // обрабатывает символьные данные
-            int count = formatCharFile(fileData, fileSize, word1, word2, distance);
-            close(fd);
-            munmap(fileData, fileSize);
-            return count;
-        }
-        std::cout << "Неправильный путь к файлу";
-        std::exit(EXIT_SUCCESS);
+        auto [fileData, fileSize, fileMapping, fileHandle] = openFileMmap(file_path);
+        int count = formatCharFile(fileData, fileSize, word1, word2, distance);
+        closeFile(fileData, fileSize, fileMapping, fileHandle);
+        return count;
     }
 
 private:
+
+    static void closeFile(char* fileData, size_t fileSize, HANDLE fileMapping, HANDLE fileHandle) {
+        #ifdef _WIN32
+            UnmapViewOfFile(fileData);
+            CloseHandle(fileMapping);
+            CloseHandle(fileHandle);
+        #else
+            munmap(fileData, fileSize);
+        #endif
+    }
+
+
+    static std::tuple<char *, size_t, HANDLE, HANDLE> openFileMmap(const std::string &file_path) {
+        size_t fileSize;
+        char *fileData;
+
+        #ifdef _WIN32
+            HANDLE fileHandle = CreateFileA(file_path.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+            if (fileHandle == INVALID_HANDLE_VALUE) {
+                std::cout << "Неправильный путь к файлу";
+                std::exit(EXIT_SUCCESS);
+            }
+
+            HANDLE fileMapping = CreateFileMapping(fileHandle, nullptr, PAGE_READONLY, 0, 0, nullptr);
+            if (fileMapping == nullptr) {
+                std::cout << "Ошибка при получении размера файла";
+                std::exit(EXIT_SUCCESS);
+            }
+
+            LPVOID fileDataRaw = MapViewOfFile(fileMapping, FILE_MAP_READ, 0, 0, 0);
+            if (fileDataRaw == nullptr) {
+                std::cout << "Ошибка при получении размера файла";
+                std::exit(EXIT_SUCCESS);
+            }
+            SetConsoleOutputCP(CP_UTF8);
+            fileData = static_cast<char*>(fileDataRaw);
+
+            LARGE_INTEGER fileSizeRaw;
+            GetFileSizeEx(fileHandle, &fileSizeRaw);
+            fileSize = fileSizeRaw.QuadPart;
+            return{fileData, fileSize, fileMapping, fileHandle};
+        #else
+            int fd = open(file_path.c_str(), O_RDONLY);
+            if (fd != -1) {
+                struct stat fileStat{};
+                if (fstat(fd, &fileStat) == -1) {
+                    close(fd);
+                    std::cout << "Ошибка при получении размера файла";
+                    std::exit(EXIT_SUCCESS);
+                }
+                // находим размер исходного файла
+                fileSize = fileStat.st_size;
+                fileData = (char *) mmap(nullptr, fileSize, PROT_READ, MAP_SHARED, fd, 0);
+            }
+            HANDLE fileMapping;
+            HANDLE fileHandle;
+            return{fileData, fileSize, fileMapping, fileHandle};
+        #endif
+    }
+
+
+
     /*
      * Проверяем пары
      * subvector - вектор из символов слова
@@ -49,16 +101,16 @@ private:
      * idW - позиция текущего слова в файле
     */
     static void updateCount(std::vector<char> &subvector, const std::string &word1, const std::string &word2,
-                                     std::vector<int > &positionFirstWord, int distance,
-                                     int &idW, int &count, int &offset){
+                            std::vector<int > &positionFirstWord, int distance,
+                            int &idW, int &count, int &offset){
         if(!subvector.empty()){
             int iOffset = offset;
             if(iOffset < positionFirstWord.size()
-                && compareStringsByChar(&(*subvector.begin()), &(*subvector.end()), word2)){
-                    for (int j = iOffset; j < positionFirstWord.size(); ++j){
-                        idW - positionFirstWord[offset] - 1 > distance ? offset = j + 1 : ++count;
-                    }
-                    offset = iOffset;
+               && compareStringsByChar(&(*subvector.begin()), &(*subvector.end()), word2)){
+                for (int j = iOffset; j < positionFirstWord.size(); ++j){
+                    idW - positionFirstWord[offset] - 1 > distance ? offset = j + 1 : ++count;
+                }
+                offset = iOffset;
             }
             if (compareStringsByChar(&(*subvector.begin()), &(*subvector.end()), word1))
                 positionFirstWord.push_back(idW);
@@ -84,7 +136,7 @@ private:
      * distance - максимально возможное расстояние между словами
     */
     static int formatCharFile(char* charSequence, size_t fileSize, const std::string &word1,
-                               const std::string &word2, int distance){
+                              const std::string &word2, int distance){
         // вектор из символов слова
         std::vector<char> charVector;
         // вектор, содержащий индексы вхождений первого слова в исходный файл
@@ -107,8 +159,12 @@ private:
                 else{
                     // если не должны пропускать символ, то добавляем его в вектор и сдвигаем указатель
                     if (regNoSkip.find(ch) != regNoSkip.end()) {
-                        charVector.push_back(charSequence[i]);
+                        charVector.push_back(ch);
                         i += regNoSkip.at(ch);
+                    }
+                    else if (isalpha(ch)){
+                        charVector.push_back(ch);
+                        ++i;
                     }
                     else {
                         charVector.insert(charVector.end(), charSequence + i, charSequence + i + 2);
@@ -126,4 +182,3 @@ private:
     }
 };
 
-#endif //KONS_CHALLENGE_CharParser_H

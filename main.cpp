@@ -1,8 +1,6 @@
-#include "StringParser.cpp"
 #include "CharParser.cpp"
+#include "StringParser.cpp"
 #include <fstream>
-#include <chrono>
-using namespace std::chrono;
 
 bool is_number(const std::string& str)
 {
@@ -12,7 +10,6 @@ bool is_number(const std::string& str)
 }
 
 int main(int argc, char* argv[]){
-
     if (argc < 5){
         std::cout << "Недостаточное число параметров. Должно быть 4 аргумента";
         std::exit(EXIT_SUCCESS);
@@ -40,7 +37,7 @@ int main(int argc, char* argv[]){
     }
     int distance = std::stoi(strDistance);
 
-    CharParser parser(filePath);
+    StringParser parser(filePath);
     int count = parser.parse(word1, word2, distance);
     std::cout << count;
 }

@@ -1,5 +1,3 @@
-#ifndef KONS_CHALLENGE_PARSER_H
-#define KONS_CHALLENGE_PARSER_H
 #include <string>
 #include <map>
 #include <utility>
@@ -26,11 +24,10 @@ const std::set<char> Parser::regChar = {
 };
 
 const std::map<std::string, int> Parser::regStr = {
-        {"»", 2}, {"«", 2}, {"№", 3}, {"—", 3}
+        {"»", 2}, {"«", 2}, {"№", 3}, {"—", 3}, {"\r\n", 2}
 };
 
 const std::map<char, int> Parser::regNoSkip = {
         {'-', 1}
 };
 
-#endif //KONS_CHALLENGE_PARSER_H

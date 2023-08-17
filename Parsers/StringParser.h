@@ -1,15 +1,8 @@
-#ifndef KONS_CHALLENGE_STRINGPARSER_H
-#define KONS_CHALLENGE_STRINGPARSER_H
 #include <string>
 #include <utility>
 #include <fstream>
 #include <iostream>
 #include <set>
-#include <regex>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
 #include"../Parser.cpp"
 
 class StringParser : public Parser{
@@ -57,8 +50,8 @@ private:
      * idW - позиция слова в файле
     */
     static void updateCount(const std::string &word, const std::string &word1, const std::string &word2,
-                                       std::vector<int> &positionFirstWord, int distance,
-                                       int &idW, int &count, int &offset){
+                            std::vector<int> &positionFirstWord, int distance,
+                            int &idW, int &count, int &offset){
         int iOffset = offset;
         if(iOffset < positionFirstWord.size() && compareStringsByString(word, word2)){
             for (int j = iOffset; j < positionFirstWord.size(); ++j){
@@ -125,4 +118,3 @@ private:
 
 };
 
-#endif //KONS_CHALLENGE_STRINGPARSER_H
