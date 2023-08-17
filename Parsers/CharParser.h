@@ -49,6 +49,7 @@ private:
     }
 
 
+    // Открываем файл на чтение. В зависимости от ОС будет выполняться свой код открытия файла
     static std::tuple<char *, size_t, HANDLE, HANDLE, int> openFileMmap(const std::string &file_path) {
         size_t fileSize;
         char *fileData;
