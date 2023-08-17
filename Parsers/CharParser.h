@@ -1,3 +1,5 @@
+#ifndef KONS_CHALLENGE_CharParser_H
+#define KONS_CHALLENGE_CharParser_H
 #include <string>
 #include <utility>
 #include <fstream>
@@ -5,7 +7,6 @@
 #include <set>
 #include <regex>
 #include"../Parser.cpp"
-
 #ifdef _WIN32
 #include <windows.h>
 #include <cstring>
@@ -14,6 +15,9 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <tcl.h>
+#include <fakesql.h>
+
 #endif
 
 
@@ -25,26 +29,27 @@ public:
      * открывает файл, отображает его в память, обрабатывает символьные данные, а затем закрывает файл
      */
     int parse(const std::string &word1, const std::string &word2, int distance) const override{
-        auto [fileData, fileSize, fileMapping, fileHandle] = openFileMmap(file_path);
+        auto [fileData, fileSize, fileMapping, fileHandle, fd] = openFileMmap(file_path);
         int count = formatCharFile(fileData, fileSize, word1, word2, distance);
-        closeFile(fileData, fileSize, fileMapping, fileHandle);
+        closeFile(fileData, fileSize, fileMapping, fileHandle, fd);
         return count;
     }
 
 private:
 
-    static void closeFile(char* fileData, size_t fileSize, HANDLE fileMapping, HANDLE fileHandle) {
+    static void closeFile(char* fileData, size_t fileSize, HANDLE fileMapping, HANDLE fileHandle, int fd) {
         #ifdef _WIN32
             UnmapViewOfFile(fileData);
             CloseHandle(fileMapping);
             CloseHandle(fileHandle);
         #else
+            close(fd);
             munmap(fileData, fileSize);
         #endif
     }
 
 
-    static std::tuple<char *, size_t, HANDLE, HANDLE> openFileMmap(const std::string &file_path) {
+    static std::tuple<char *, size_t, HANDLE, HANDLE, int> openFileMmap(const std::string &file_path) {
         size_t fileSize;
         char *fileData;
 
@@ -72,7 +77,7 @@ private:
             LARGE_INTEGER fileSizeRaw;
             GetFileSizeEx(fileHandle, &fileSizeRaw);
             fileSize = fileSizeRaw.QuadPart;
-            return{fileData, fileSize, fileMapping, fileHandle};
+            return{fileData, fileSize, fileMapping, fileHandle, 5};
         #else
             int fd = open(file_path.c_str(), O_RDONLY);
             if (fd != -1) {
@@ -85,10 +90,13 @@ private:
                 // находим размер исходного файла
                 fileSize = fileStat.st_size;
                 fileData = (char *) mmap(nullptr, fileSize, PROT_READ, MAP_SHARED, fd, 0);
+                HANDLE fileMapping;
+                HANDLE fileHandle;
+                return{fileData, fileSize, fileMapping, fileHandle, fd};
             }
-            HANDLE fileMapping;
-            HANDLE fileHandle;
-            return{fileData, fileSize, fileMapping, fileHandle};
+            close(fd);
+            std::cout << "Неправильный путь к файлу";
+            std::exit(EXIT_SUCCESS);
         #endif
     }
 
@@ -181,4 +189,4 @@ private:
         return count;
     }
 };
-
+#endif //KONS_CHALLENGE_CharParser_H

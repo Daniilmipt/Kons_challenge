@@ -1,3 +1,5 @@
+#ifndef KONS_CHALLENGE_STRINGPARSER_H
+#define KONS_CHALLENGE_STRINGPARSER_H
 #include <string>
 #include <utility>
 #include <fstream>
@@ -118,3 +120,4 @@ private:
 
 };
 
+#endif //KONS_CHALLENGE_STRINGPARSER_H

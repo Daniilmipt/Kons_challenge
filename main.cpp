@@ -37,7 +37,7 @@ int main(int argc, char* argv[]){
     }
     int distance = std::stoi(strDistance);
 
-    StringParser parser(filePath);
+    CharParser parser(filePath);
     int count = parser.parse(word1, word2, distance);
     std::cout << count;
 }
