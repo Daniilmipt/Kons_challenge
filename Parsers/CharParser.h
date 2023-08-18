@@ -7,6 +7,7 @@
 #include <set>
 #include <regex>
 #include"../Parser.cpp"
+
 #ifdef _WIN32
 #include <windows.h>
 #include <cstring>
@@ -17,7 +18,6 @@
 #include <unistd.h>
 #include <tcl.h>
 #include <fakesql.h>
-
 #endif
 
 
@@ -105,26 +105,27 @@ private:
 
     /*
      * Проверяем пары
-     * subvector - вектор из символов слова
+     * charVector - вектор из символов слова
      * positionFirstWord - вектор из индексов вхождений первого слова в исходный файл
      * idW - позиция текущего слова в файле
     */
-    static void updateCount(std::vector<char> &subvector, const std::string &word1, const std::string &word2,
+    static void updateCount(std::vector<char> &charVector, const std::string &word1, const std::string &word2,
                             std::vector<int > &positionFirstWord, int distance,
                             int &idW, int &count, int &offset){
-        if(!subvector.empty()){
+        if(!charVector.empty()){
             int iOffset = offset;
             if(iOffset < positionFirstWord.size()
-               && compareStringsByChar(&(*subvector.begin()), &(*subvector.end()), word2)){
+               && compareStringsByChar(&(*charVector.begin()), &(*charVector.end()), word2)){
                 for (int j = iOffset; j < positionFirstWord.size(); ++j){
                     idW - positionFirstWord[offset] - 1 > distance ? offset = j + 1 : ++count;
                 }
                 offset = iOffset;
             }
-            if (compareStringsByChar(&(*subvector.begin()), &(*subvector.end()), word1))
+            if (compareStringsByChar(&(*charVector.begin()), &(*charVector.end()), word1))
                 positionFirstWord.push_back(idW);
-            subvector.clear();
+            charVector.clear();
             ++idW;
+//            std::cerr << idW << " " << count << "\n";
         }
     }
 
@@ -166,12 +167,14 @@ private:
                     i += regStr.find(pChar) != regStr.end() ? regStr.at(pChar) : regStr.at(pStr);
                 }
                 else{
-                    // если не должны пропускать символ, то добавляем его в вектор и сдвигаем указатель
-                    if (regNoSkip.find(ch) != regNoSkip.end()) {
-                        charVector.push_back(ch);
-                        i += regNoSkip.at(ch);
+                    // символ может находиться внутри слова
+                    if (regNoSkip.count(ch)){
+                        // если вектор пустой, значит слова не было и символ сам по себе -> игнорируем его
+                        if (!charVector.empty())
+                            charVector.push_back(ch);
+                        ++i;
                     }
-                    else if (isalpha(ch)){
+                    if (isalpha(ch) || isdigit(ch)){
                         charVector.push_back(ch);
                         ++i;
                     }
@@ -182,7 +185,8 @@ private:
                 }
             }
             else{
-                updateCount(charVector, word1, word2, positionsWord1, distance, idW, count, offset);
+                if (ch == ' ' || ch == '\n')
+                    updateCount(charVector, word1, word2, positionsWord1, distance, idW, count, offset);
                 ++i;
             }
         }

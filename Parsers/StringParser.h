@@ -101,8 +101,17 @@ private:
                     regStr.find(pChar) != regStr.end() ? i += regStr.at(pChar) : i += regStr.at(pStr);
                 }
                 else{
-                    if (regNoSkip.find(ch) != regNoSkip.end())
-                        subCharVector.push_back(str[i++]);
+                    // символ может находиться внутри слова
+                    if (regNoSkip.count(ch)){
+                        // если вектор пустой, значит слова не было и символ сам по себе -> игнорируем его
+                        if (!subCharVector.empty())
+                            subCharVector.push_back(ch);
+                        ++i;
+                    }
+                    else if (isalpha(ch) || isdigit(ch)){
+                        subCharVector.push_back(ch);
+                        ++i;
+                    }
                     else {
                         subCharVector.insert(subCharVector.end(), str.begin() + i, str.begin() + i + 2);
                         i += 2;
@@ -110,7 +119,8 @@ private:
                 }
             }
             else{
-                vectorByString(subCharVector, strVector);
+                if (ch == ' ' || ch == '\n')
+                    vectorByString(subCharVector, strVector);
                 ++i;
             }
         }

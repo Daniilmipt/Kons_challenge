@@ -14,22 +14,19 @@ protected:
     const std::string file_path;
     static const std::set<char> regChar;
     static const std::map<std::string, int> regStr;
-    static const std::map<char, int> regNoSkip;
+    static const std::set<char> regNoSkip;
 };
 
 
 const std::set<char> Parser::regChar = {
         ' ', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '[', ']',
         '{', '}', ':', '\"', '<', '>', '?', '/', '.', ',', '\'', ';',
-        '_', '+', '=', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-        '~', '`', '\\', '|', '\n'
+        '_', '+', '=', '~', '`', '\\', '|', '\n'
 };
 
 const std::map<std::string, int> Parser::regStr = {
         {"»", 2}, {"«", 2}, {"№", 3}, {"—", 3}, {"\r\n", 2}
 };
 
-const std::map<char, int> Parser::regNoSkip = {
-        {'-', 1}
-};
+const std::set<char> Parser::regNoSkip = {'-'};
 #endif //KONS_CHALLENGE_PARSER_H
