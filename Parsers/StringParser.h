@@ -119,7 +119,7 @@ private:
                 }
             }
             else{
-                if (ch == ' ' || ch == '\n')
+                if (ch == ' ' || ch == '\n' || ch == '\t')
                     vectorByString(subCharVector, strVector);
                 ++i;
             }

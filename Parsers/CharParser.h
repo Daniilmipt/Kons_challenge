@@ -125,7 +125,6 @@ private:
                 positionFirstWord.push_back(idW);
             charVector.clear();
             ++idW;
-//            std::cerr << idW << " " << count << "\n";
         }
     }
 
@@ -185,7 +184,7 @@ private:
                 }
             }
             else{
-                if (ch == ' ' || ch == '\n')
+                if (ch == ' ' || ch == '\n' || ch == '\t')
                     updateCount(charVector, word1, word2, positionsWord1, distance, idW, count, offset);
                 ++i;
             }
