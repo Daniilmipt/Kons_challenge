@@ -9,7 +9,7 @@ class Parser{
 public:
     explicit Parser(std::string file_path): file_path(std::move(file_path)) {}
 
-    virtual int parse(const std::string &word1, const std::string &word2, int distance) const = 0;
+    virtual int parse(const std::string &word1, const std::string &word2, const int &distance) const = 0;
 protected:
     const std::string file_path;
     static const std::set<char> regChar;

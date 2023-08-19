@@ -2,7 +2,7 @@
 #include "StringParser.cpp"
 #include <fstream>
 
-bool is_number(const std::string& str)
+bool is_number(const std::string &str)
 {
     std::string::const_iterator it = str.begin();
     while (it != str.end() && std::isdigit(*it)) ++it;
@@ -19,13 +19,13 @@ int main(int argc, char* argv[]){
         std::exit(EXIT_SUCCESS);
     }
 
-    std::string filePath = argv[1];
+    const std::string filePath = argv[1];
     std::string word1 = argv[2];
     if (is_number(word1)){
         std::cout << "Первое слово не должно быть числом";
         std::exit(EXIT_SUCCESS);
     }
-    std::string word2 = argv[3];
+    const std::string word2 = argv[3];
     if (is_number(word2)){
         std::cout << "Второе слово не должно быть числом";
         std::exit(EXIT_SUCCESS);
@@ -35,9 +35,9 @@ int main(int argc, char* argv[]){
         std::cout << "Расстояние между словами должно быть целым неотрицательным числом";
         std::exit(EXIT_SUCCESS);
     }
-    int distance = std::stoi(strDistance);
+    const int distance = std::stoi(strDistance);
 
-    CharParser parser(filePath);
-    int count = parser.parse(word1, word2, distance);
+    StringParser parser(filePath);
+    const int count = parser.parse(word1, word2, distance);
     std::cout << count;
 }
